@@ -1,0 +1,28 @@
+
+@media (max-width: 770px) {
+    .float-left {
+      /* float: left; */
+      color: #fff;
+      float: none;
+      text-align: center;
+    }
+  
+    .right {
+      /* float: right; */
+      margin-top: -24px;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 996px) {
+    .item-menu {
+      margin-left: -40px;
+    }
+    .item-menu ul li {
+      display: inline-block;
+      width: 50%;
+      margin-right: 0;
+      float: none;
+    }
+  }
+  
