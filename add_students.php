@@ -54,6 +54,10 @@ include_once "autoload.php";
         $gender = $_POST['gender'];
         $course = $_POST['course'];
 
+        // email check for duplicate data 
+        $mail = connect()->query("SELECT email FROM students WHERE email='$email'");
+        $email_check = $mail->num_rows; 
+        
 
         /**
          * Form validation
@@ -62,7 +66,10 @@ include_once "autoload.php";
             $msg =  validate('All fields are required');
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
             $msg =  validate('Invalid Email address');
-        } else {
+        }else if($email_check>0){
+              $msg = validate('Email already exists', 'warning');
+        }
+         else {
 
 
             // Upload ptofile photo			

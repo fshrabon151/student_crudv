@@ -34,7 +34,7 @@ if (isset($_POST['stc'])) {
         } else {
             $photo_name = $_POST['old_photo'];
         }
-        connect()->query("UPDATE students SET name='$name', email='$email', cell='$cell', username='$username', location='$location', age='$age', gender='$gender', course='$course', photo='$photo_name' WHERE id='$id'");
+        update("UPDATE students SET name='$name', email='$email', cell='$cell', username='$username', location='$location', age='$age', gender='$gender', course='$course', photo='$photo_name' WHERE id='$id'");
         $msg =  validate('Data Updated Successfully', 'success');
     }
 }

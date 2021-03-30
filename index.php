@@ -5,13 +5,13 @@ include_once "autoload.php";
  * Student Data Delete
  */
 if (isset($_GET['delete_id'])) {
-	$delete_id = $_GET['delete_id'];
-	$photo_name = $_GET['photo'];
+     $delete_id = $_GET['delete_id'];
+     $photo_name = $_GET['photo'];
 
 
-	unlink('photos/' . $photo_name);
-	delete('students', $delete_id);
-	header("location:index.php");
+     unlink('photos/' . $photo_name);
+     delete('students', $delete_id);
+     header("location:index.php");
 }
 
 ?>
@@ -50,7 +50,7 @@ if (isset($_GET['delete_id'])) {
 
      <div id="wrapper" class="menuDisplayed">
           <!-- sidebar  -->
-          <div id="sidebar-wrapper" >
+          <div id="sidebar-wrapper">
 
                <div class="logo">
                     <i class="fas fa-user-graduate"></i>
@@ -65,11 +65,18 @@ if (isset($_GET['delete_id'])) {
           <!-- Page content  -->
           <div id="page-content-wrapper">
                <div class="container-fluid">
+
                     <div class="row">
                          <div class="col-lg-12">
-                              <p class="page-title"><a href="#" class="btn btn-success" id="menu-toggle"><i
-                                             class="fas fa-bars"></i></a> <span
-                                             class="span-title">  <i class="fas fa-user-plus"></i></i> All Student</span></p>
+                              <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> All Student</span></p>
+
+                              <form class="form-inline float-right" action="" method="POST">
+                                   <div class="form-group mx-sm-3 mb-2">
+                                        <label for="search_1" class="sr-only">Search</label>
+                                        <input type="search" class="form-control" name="search" id="search_1" placeholder="Search..">
+                                   </div>
+                                   <button type="submit" name="search-btn" class="btn btn-primary mb-2">Search</button>
+                              </form> 
                               <table class="table table-striped">
                                    <thead>
                                         <tr>
@@ -82,25 +89,34 @@ if (isset($_GET['delete_id'])) {
                                         </tr>
                                    </thead>
                                    <tbody>
-                                   <?php
-                                   $data = all('students');
-                                    $i=1;
-                                    while($student= $data->fetch_object()):
-                                   ?>
-                                        <tr class="pt-2">
-                                             <th scope="row"><?php echo $i; $i++;?></th>
-                                             <td><?php echo $student->name?></td>
-                                             <td><?php echo $student->email?></td>
-                                             <td><?php echo $student->cell?></td>
-                                             <td><img src="photos/<?php echo $student->photo?>" width="80" height="80" alt=""></td>
-                                             <td>
-                                                  <a class="btn btn-sm btn-info" href="show.php?show_id=<?php echo $student->id?>">View</a>
-                                                  <a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $student->id?>">Edit</a>
-									     <a  id="delete_btn" class="btn btn-sm btn-danger" href="?delete_id=<?php echo $student->id?>&photo=<?php echo $student->photo?>">Delete</a>
-                                             </td>
-                                        </tr>
+                                        <?php
+                                        $data = all('students');
 
-                                        <?php endwhile;?>
+                                        //Search function start
+                                        if(isset($_POST['search-btn'])){
+                                           $search = $_POST['search'];
+                                             $data = search('students','name',$search);
+                                        }
+                                        //Search function end
+
+                                        $i = 1;
+                                        while ($student = $data->fetch_object()) :
+                                        ?>
+                                             <tr class="pt-2">
+                                                  <th scope="row"><?php echo $i;
+                                                                      $i++; ?></th>
+                                                  <td><?php echo $student->name ?></td>
+                                                  <td><?php echo $student->email ?></td>
+                                                  <td><?php echo $student->cell ?></td>
+                                                  <td><img src="photos/<?php echo $student->photo ?>" width="80" height="80" alt=""></td>
+                                                  <td>
+                                                       <a class="btn btn-sm btn-info" href="show.php?show_id=<?php echo $student->id ?>">View</a>
+                                                       <a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $student->id ?>">Edit</a>
+                                                       <a class="btn btn-sm btn-danger delete_btn" href="?delete_id=<?php echo $student->id ?>&photo=<?php echo $student->photo ?>">Delete</a>
+                                                  </td>
+                                             </tr>
+
+                                        <?php endwhile; ?>
                                    </tbody>
                               </table>
                          </div>
@@ -114,29 +130,29 @@ if (isset($_GET['delete_id'])) {
 
 
      <!-- JS FILES  -->
-	<script src="assets/js/jquery-3.4.1.min.js"></script>
-	<script src="assets/js/popper.min.js"></script>
-	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/custom.js"></script>
+     <script src="assets/js/jquery-3.4.1.min.js"></script>
+     <script src="assets/js/popper.min.js"></script>
+     <script src="assets/js/bootstrap.min.js"></script>
+     <script src="assets/js/custom.js"></script>
 
      <script>
-          $("#menu-toggle").click(function (e) {
+          $("#menu-toggle").click(function(e) {
 
                e.preventDefault();
                $("#wrapper").toggleClass("menuDisplayed");
 
           });
-          
-          $('#delete_btn').click(function() {
-			let confirmation = confirm('Are you sure ?');
 
-			if (confirmation == true) {
-				return true;
-			} else {
-				return false;
-			}
+          $('.delete_btn').click(function() {
+               let confirmation = confirm('Are you sure ?');
 
-		});
+               if (confirmation == true) {
+                    return true;
+               } else {
+                    return false;
+               }
+
+          });
      </script>
 </body>
 

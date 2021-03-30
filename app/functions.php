@@ -42,6 +42,22 @@ function validate($msg, $type = 'danger')
     return "<p class=\"alert alert-$type\">$msg ! <button class=\"close\" data-dismiss=\"alert\">&times</button></p>";
 }
 
+/**
+ * Search function
+ */
+
+function search($table, $column, $value)
+{
+    $sql="SELECT * FROM $table WHERE $column LIKE '%$value%'";
+    return connect()->query($sql);
+}
+/**
+ * Update function
+ */
+function update($sql){
+    connect()->query($sql);
+}
+
 
 /**
  * file upload function
