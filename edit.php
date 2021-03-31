@@ -17,9 +17,10 @@ if (isset($_POST['stc'])) {
     $course = $_POST['course'];
 
     $id = $_GET['edit_id'];
+    $updated_at = date('Y-m-d g:i:h', time()); 
 
 
-    /**
+    /**  
      * Form validation
      */
     if (empty($name) || empty($email) || empty($cell) || empty($username)) {
@@ -34,7 +35,8 @@ if (isset($_POST['stc'])) {
         } else {
             $photo_name = $_POST['old_photo'];
         }
-        update("UPDATE students SET name='$name', email='$email', cell='$cell', username='$username', location='$location', age='$age', gender='$gender', course='$course', photo='$photo_name' WHERE id='$id'");
+        //updating data using function
+        update("UPDATE students SET name='$name', email='$email', cell='$cell', username='$username', location='$location', age='$age', gender='$gender', course='$course', photo='$photo_name', updated_at = '$updated_at'  WHERE id='$id'");
         $msg =  validate('Data Updated Successfully', 'success');
     }
 }
@@ -101,6 +103,7 @@ if (isset($_GET['edit_id'])) {
             <ul class="sidebar-nav">
                 <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
                 <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                 <li><a href="#">Logout</a></li>
             </ul>
         </div>

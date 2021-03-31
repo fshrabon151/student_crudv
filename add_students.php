@@ -54,11 +54,6 @@ include_once "autoload.php";
         $gender = $_POST['gender'];
         $course = $_POST['course'];
 
-        // email check for duplicate data 
-        $mail = connect()->query("SELECT email FROM students WHERE email='$email'");
-        $email_check = $mail->num_rows; 
-        
-
         /**
          * Form validation
          */
@@ -66,9 +61,18 @@ include_once "autoload.php";
             $msg =  validate('All fields are required');
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
             $msg =  validate('Invalid Email address');
-        }else if($email_check>0){
-              $msg = validate('Email already exists', 'warning');
         }
+        // email check for duplicate data 
+        else if(dataCheck('students', 'email', $email)){
+              $msg = validate('Email already exists', 'warning');
+        }// cell check for duplicate data 
+        else if(dataCheck('students', 'email', $email)){
+            $msg = validate('Email already exists', 'warning');
+      }
+        // username check for duplicate data 
+        else if(dataCheck('students', 'cell', $cell)){
+            $msg = validate('Cell  already exists', 'warning');
+      }
          else {
 
 
@@ -103,6 +107,7 @@ include_once "autoload.php";
             <ul class="sidebar-nav">
                 <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
                 <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                 <li><a href="#">Logout</a></li>
             </ul>
         </div>
@@ -123,24 +128,24 @@ include_once "autoload.php";
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="form-label" for="name">Student Name</label>
-                                        <input type="text" class="form-control" id="name" name="name">
+                                        <input type="text" class="form-control" id="name" name="name" value="<?php old('name')?>">
                                     </div><br>
                                     <div class="form-group">
                                         <label class="form-label" for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email">
+                                        <input type="email" class="form-control" id="email" name="email" value="<?php old('email')?>">
                                     </div><br>
                                     <div class="form-group">
                                         <label class="form-label" for="pNumber">Phone Number</label>
-                                        <input type="text" class="form-control" id="pNumber" name="pNumber">
+                                        <input type="text" class="form-control" id="pNumber" name="pNumber" value="<?php old('pNumber')?>">
                                     </div><br>
                                     <div class="form-group">
                                         <label class="form-label" for="username">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username">
+                                        <input type="text" class="form-control" id="username" name="username" value="<?php old('username')?>">
                                     </div><br>
 
                                     <div class="form-group">
                                         <label for="">Location</label>
-                                        <select class="form-control" name="location" id="">
+                                        <select class="form-control" name="location" value="<?php old('location')?>" id="">
                                             <option>-- Select Location --</option>
                                             <option value="Barishal">Barishal</option>
                                             <option value="Dhaka">Dhaka</option>
@@ -156,7 +161,7 @@ include_once "autoload.php";
 
                                     <div class="form-group">
                                         <label class="form-label" for="age">Age</label>
-                                        <input type="text" id="age" name="age" class="form-control">
+                                        <input type="text" id="age" name="age" class="form-control" value="<?php old('age')?>">
                                     </div><br>
 
                                     <div class="form-group">
@@ -167,7 +172,7 @@ include_once "autoload.php";
 
                                     <div class="form-group">
                                         <label for="">Course</label>
-                                        <select class="form-control" name="course" id="">
+                                        <select class="form-control" name="course" id="" value="<?php old('course')?>">
                                             <option value="">-- Select Course --</option>
                                             <option value="Photoshop">Photoshop</option>
                                             <option value="Web Design">Web Design</option>
@@ -186,7 +191,7 @@ include_once "autoload.php";
                                         <img id="load_student_photo" style="max-width:100% ;" src="" alt="">
                                         <br>
                                         <label for="student_photo" id="student_up"> <img width="100" src="assets/img/uloadphoto.png" alt=""></label>
-                                        <input id="student_photo" name="photo" style="display:none;" class="form-control" type="file">
+                                        <input id="student_photo" name="photo" value="<?php old('photo')?>" style="display:none;" class="form-control" type="file">
                                     </div>
                                     <br>
 

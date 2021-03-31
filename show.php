@@ -60,6 +60,7 @@ if (isset($_GET['show_id'])) {
             <ul class="sidebar-nav">
                 <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
                 <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                 <li><a href="#">Logout</a></li>
             </ul>
         </div>

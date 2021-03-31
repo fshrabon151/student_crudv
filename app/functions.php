@@ -17,6 +17,13 @@ function all($table, $order = 'DESC')
 }
 
 /**
+ * To fetch all data
+ */
+function allOutTrash($table, $columnName='trash', $trash_value = 'false', $order = 'DESC')
+{
+    return connect()->query("SELECT * FROM $table WHERE $columnName = '$trash_value' ORDER BY id $order");
+}
+/**
  * fetch individual data by ID
  */
 function find($table, $id)
@@ -60,6 +67,29 @@ function update($sql){
 
 
 /**
+ * Data check function for duplicate data
+ */
+function dataCheck($table, $columnName, $value){
+    $mail = connect()->query("SELECT $columnName FROM $table WHERE $columnName='$value'");
+        if($mail->num_rows > 0){ 
+            return true;
+        } else{
+            return false;
+        }
+}
+
+/**
+ * Old function for data recover
+ */
+function old($name){
+    if(isset($_POST[$name])){
+    echo $_POST[$name];
+    }
+}
+
+
+
+/**
  * file upload function
  */
 function move($file, $location = '/', array $type = ['jpg', 'png', 'gif', 'jpeg'])
@@ -79,8 +109,6 @@ function move($file, $location = '/', array $type = ['jpg', 'png', 'gif', 'jpeg'
         // Upload file 
         move_uploaded_file($file_name_tmp, $location . $unique_name);
     }
-
-
     return [
         'unique_name'   => $unique_name,
         'err_msg'       => $msg

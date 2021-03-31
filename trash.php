@@ -4,10 +4,22 @@ include_once "autoload.php";
 /**
  * Student Data Delete
  */
-if (isset($_GET['trash_id'])) {
-     $trash_id = $_GET['trash_id'];
-     update("UPDATE students SET trash='true' WHERE id='$trash_id'");
-     header("location:index.php");
+if (isset($_GET['delete_id'])) {
+     $delete_id = $_GET['delete_id'];
+     $photo_name = $_GET['photo'];
+
+
+     unlink('photos/' . $photo_name);
+     delete('students', $delete_id);
+     header("location:trash.php");
+}
+/**
+ * Restore student data
+ */
+if (isset($_GET['restore_id'])) {
+    $restore_id = $_GET['restore_id'];
+    update("UPDATE students SET trash='false' WHERE id='$restore_id'");
+    header("location:trash.php");
 }
 
 ?>
@@ -65,7 +77,7 @@ if (isset($_GET['trash_id'])) {
 
                     <div class="row">
                          <div class="col-lg-12">
-                              <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> All Student</span></p>
+                              <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"></i> <i class="far fa-trash-alt"></i> Trash</span></p>
 
                               <form class="form-inline float-right" action="" method="POST">
                                    <div class="form-group mx-sm-3 mb-2">
@@ -88,7 +100,7 @@ if (isset($_GET['trash_id'])) {
                                    <tbody>
                                         <?php
                                         
-                                        $data = allOutTrash('students');
+                                        $data = allOutTrash('students','trash','true');
 
                                         //Search function start
                                         if(isset($_POST['search-btn'])){
@@ -108,9 +120,8 @@ if (isset($_GET['trash_id'])) {
                                                   <td><?php echo $student->cell ?></td>
                                                   <td><img src="photos/<?php echo $student->photo ?>" width="80" height="80" alt=""></td>
                                                   <td>
-                                                       <a class="btn btn-sm btn-info" href="show.php?show_id=<?php echo $student->id ?>">View</a>
-                                                       <a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $student->id ?>">Edit</a>
-                                                       <a class="btn btn-sm btn-danger delete_btn" href="?trash_id=<?php echo $student->id ?>&photo=<?php echo $student->photo ?>">Trash</a>
+                                                       <a class="btn btn-sm btn-success restore_btn" href="?restore_id=<?php echo $student->id ?>">Restore</a>
+                                                       <a class="btn btn-sm btn-danger delete_btn" href="?delete_id=<?php echo $student->id ?>&photo=<?php echo $student->photo ?>">Delete Parmanently</a>
                                                   </td>
                                              </tr>
 
@@ -142,6 +153,17 @@ if (isset($_GET['trash_id'])) {
           });
 
           $('.delete_btn').click(function() {
+               let confirmation = confirm('Are you sure ?');
+
+               if (confirmation == true) {
+                    return true;
+               } else {
+                    return false;
+               }
+
+          });
+
+          $('.restore_btn').click(function() {
                let confirmation = confirm('Are you sure ?');
 
                if (confirmation == true) {
