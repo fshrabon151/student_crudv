@@ -10,16 +10,16 @@ if (isset($_GET['delete_id'])) {
 
 
      unlink('photos/' . $photo_name);
-     delete('students', $delete_id);
+     delete('products', $delete_id);
      header("location:trash.php");
 }
 /**
  * Restore student data
  */
 if (isset($_GET['restore_id'])) {
-    $restore_id = $_GET['restore_id'];
-    update("UPDATE students SET trash='false' WHERE id='$restore_id'");
-    header("location:trash.php");
+     $restore_id = $_GET['restore_id'];
+     update("UPDATE products SET trash='false' WHERE id='$restore_id'");
+     header("location:trash.php");
 }
 
 ?>
@@ -62,11 +62,11 @@ if (isset($_GET['restore_id'])) {
 
                <div class="logo">
                     <i class="fas fa-user-graduate"></i>
-                    <span>Student CRUDV Application</span>
+                    <span>Product CRUDV Application</span>
                </div>
                <ul class="sidebar-nav">
-                    <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
-                    <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                    <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                    <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                     <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                     <li><a href="#">Logout</a></li>
                </ul>
@@ -85,43 +85,44 @@ if (isset($_GET['restore_id'])) {
                                         <input type="search" class="form-control" name="search" id="search_1" placeholder="Search..">
                                    </div>
                                    <button type="submit" name="search-btn" class="btn btn-info mb-2">Search</button>
-                              </form> 
+                              </form>
                               <table class="table table-striped">
                                    <thead>
-                                        <tr>
+                                   <tr>
                                              <th scope="col">SL</th>
-                                             <th scope="col">Name</th>
-                                             <th scope="col">Email</th>
-                                             <th scope="col">Phone Number</th>
                                              <th scope="col">Photo</th>
+                                             <th scope="col">Product Name</th>
+                                             <th scope="col">Description</th>
+                                             <th scope="col">Brand</th>
+                                             <th scope="col">Selling Price</th>
                                              <th scope="col">Operation</th>
                                         </tr>
                                    </thead>
                                    <tbody>
                                         <?php
-                                        
-                                        $data = allOutTrash('students','trash','true');
+
+                                        $data = allOutTrash('products', 'trash', 'true');
 
                                         //Search function start
-                                        if(isset($_POST['search-btn'])){
-                                           $search = $_POST['search'];
-                                             $data = search('students','name',$search);
+                                        if (isset($_POST['search-btn'])) {
+                                             $search = $_POST['search'];
+                                             $data = search('products', 'name', $search);
                                         }
                                         //Search function end
 
                                         $i = 1;
-                                        while ($student = $data->fetch_object()) :
+                                        while ($product = $data->fetch_object()) :
                                         ?>
-                                             <tr class="pt-2">
-                                                  <th scope="row"><?php echo $i;
+                                             <th scope="row"><?php echo $i;
                                                                       $i++; ?></th>
-                                                  <td><?php echo $student->name ?></td>
-                                                  <td><?php echo $student->email ?></td>
-                                                  <td><?php echo $student->cell ?></td>
-                                                  <td><img src="photos/<?php echo $student->photo ?>" width="80" height="80" alt=""></td>
-                                                  <td>
-                                                       <a class="btn btn-sm btn-success restore_btn" href="?restore_id=<?php echo $student->id ?>">Restore</a>
-                                                       <a class="btn btn-sm btn-danger delete_btn" href="?delete_id=<?php echo $student->id ?>&photo=<?php echo $student->photo ?>">Delete Parmanently</a>
+                                                  <td><img src="photos/<?php echo $product->photo ?>" width="80" height="80" alt=""></td>
+                                                  <td><?php echo $product->productName ?></td>
+                                                  <td><?php echo $product->description ?></td>
+                                                  <td><?php echo $product->brandName ?></td>
+                                                  <td><?php echo $product->sellingPrice ?></td>
+                                                  <td style="width: 180px;">
+                                                       <a class="btn btn-sm btn-success restore_btn" href="?restore_id=<?php echo $product->id ?>">Restore</a>
+                                                       <a class="btn btn-sm btn-danger delete_btn" href="?delete_id=<?php echo $product->id ?>&photo=<?php echo $product->photo ?>">Delete Parmanently</a>
                                                   </td>
                                              </tr>
 

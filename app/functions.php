@@ -31,6 +31,20 @@ function find($table, $id)
     $data = connect()->query("SELECT * FROM $table WHERE id='$id'");
     return $data->fetch_object();
 }
+/**
+ * fetch individual data by ID
+ */
+function singleFind($table, $columnName, $id)
+{
+    return $data = connect()->query("SELECT * FROM $table WHERE $columnName='$id'");
+}
+/**
+ * fetch Top data by ID
+ */
+function findTop($table, $number)
+{
+    return $data = connect()->query("SELECT * FROM $table LIMIT $number");
+}
 
 /**
  * Delete individual Data
@@ -64,6 +78,28 @@ function search($table, $column, $value)
 function update($sql){
     connect()->query($sql);
 }
+
+/**
+ * Max function
+ */
+function maxValue($table,$currentName, $NewName ){
+    return connect()->query("SELECT MAX($currentName) AS $NewName FROM $table");
+    
+}
+/**
+ * Min function
+ */
+function minValue($table,$currentName, $NewName ){
+    return connect()->query("SELECT MIN($currentName) AS $NewName FROM $table");
+}
+
+/**
+ * Single dictinct column function
+ */
+function singleColumn($table, $columnName){
+    return connect()->query("SELECT DISTINCT $columnName FROM $table");
+}
+
 
 
 /**

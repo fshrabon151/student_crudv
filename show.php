@@ -6,7 +6,7 @@ include_once "autoload.php";
 if (isset($_GET['show_id'])) {
     $id = $_GET['show_id'];
 
-    $student = find('students', $id);
+    $product = find('products', $id);
 }
 
 ?>
@@ -18,7 +18,7 @@ if (isset($_GET['show_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $student->name; ?></title>
+    <title><?php echo $product->productName;?></title>
 
     <!-- Favicon  -->
     <link rel="icon" href="assets/img/favicon-16x16.png">
@@ -55,11 +55,11 @@ if (isset($_GET['show_id'])) {
 
             <div class="logo">
                 <i class="fas fa-user-graduate"></i>
-                <span>Student CRUDV Application</span>
+                <span>Product CRUDV Application</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
-                <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                 <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                 <li><a href="#">Logout</a></li>
             </ul>
@@ -75,40 +75,36 @@ if (isset($_GET['show_id'])) {
                             <div class="row">
                                 <div class="col-lg-7 mx-auto mt-5">
                                     <div class="card p-5">
-                                        <img src="photos/<?php echo $student->photo ?>" class="simg shadow mb-4" alt="">
-                                        <h2 class="text-center"><?php echo $student->name ?></h2>
-                                        <p class="text-center"><?php echo $student->username ?></p>
+                                        <img src="photos/<?php echo $product->photo ?>" class="simg shadow mb-4" alt="">
+                                        <h2 class="text-center"><?php echo $product->productName ?></h2>
+                                        <p class="text-center"><?php echo $product->description ?></p>
 
                                         <div class="card-body">
                                             <table class="table">
                                                 <tr>
-                                                    <td>Name</td>
-                                                    <td><?php echo $student->name ?></td>
+                                                    <td>Regular Price</td>
+                                                    <td>$<?php echo $product->regularPrice ?></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>Email</td>
-                                                    <td><?php echo $student->email ?></td>
+                                                    <td>Selling Price</td>
+                                                    <td><?php echo $product->sellingPrice ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Phone Number</td>
-                                                    <td><?php echo $student->cell ?></td>
+                                                    <td>Category</td>
+                                                    <td><?php echo $product->category ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Gender</td>
-                                                    <td><?php echo $student->gender ?></td>
+                                                    <td>Brand Name</td>
+                                                    <td><?php echo $product->brandName ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Course</td>
-                                                    <td><?php echo $student->course ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Location</td>
-                                                    <td><?php echo $student->location ?></td>
+                                                    <td>Tag</td>
+                                                    <td><?php echo $product->tag ?></td>
                                                 </tr>
                                             </table>
 
-                                            <a href="index.php" class="btn btn-primary btn-sm">Back</a>
+                                            <a href="view.php" class="btn btn-primary btn-sm">Back</a>
                                         </div>
                                     </div>
 
@@ -129,10 +125,10 @@ if (isset($_GET['show_id'])) {
 
 
     <!-- JS FILES  -->
-	<script src="assets/js/jquery-3.4.1.min.js"></script>
-	<script src="assets/js/popper.min.js"></script>
-	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/custom.js"></script>
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/custom.js"></script>
 
     <script>
         $("#menu-toggle").click(function(e) {

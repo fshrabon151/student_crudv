@@ -7,7 +7,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db = 'stc';
+$db = 'miniecom';
 
 /**
  * Conect function

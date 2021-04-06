@@ -6,8 +6,8 @@ include_once "autoload.php";
  */
 if (isset($_GET['trash_id'])) {
      $trash_id = $_GET['trash_id'];
-     update("UPDATE students SET trash='true' WHERE id='$trash_id'");
-     header("location:index.php");
+     update("UPDATE products SET trash='true' WHERE id='$trash_id'");
+     header("location:view.php");
 }
 
 ?>
@@ -50,11 +50,11 @@ if (isset($_GET['trash_id'])) {
 
                <div class="logo">
                     <i class="fas fa-user-graduate"></i>
-                    <span>Student CRUDV Application</span>
+                    <span>Product CRUDV Application</span>
                </div>
                <ul class="sidebar-nav">
-                    <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Student</a></li>
-                    <li><a href="add_students.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
+                    <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                    <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                     <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                     <li><a href="#">Logout</a></li>
                </ul>
@@ -65,7 +65,7 @@ if (isset($_GET['trash_id'])) {
 
                     <div class="row">
                          <div class="col-lg-12">
-                              <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> All Student</span></p>
+                              <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> All Product</span></p>
 
                               <form class="form-inline float-right" action="" method="POST">
                                    <div class="form-group mx-sm-3 mb-2">
@@ -78,39 +78,41 @@ if (isset($_GET['trash_id'])) {
                                    <thead>
                                         <tr>
                                              <th scope="col">SL</th>
-                                             <th scope="col">Name</th>
-                                             <th scope="col">Email</th>
-                                             <th scope="col">Phone Number</th>
                                              <th scope="col">Photo</th>
-                                             <th scope="col">Operation</th>
+                                             <th scope="col">Product Name</th>
+                                             <th scope="col">Brand</th>
+                                             <th scope="col">Description</th>
+                                             <th scope="col">Selling Price</th>
+                                             <th scope="col-md-12">Operation</th>
                                         </tr>
                                    </thead>
                                    <tbody>
                                         <?php
                                         
-                                        $data = allOutTrash('students');
+                                        $data = allOutTrash('products');
 
                                         //Search function start
                                         if(isset($_POST['search-btn'])){
                                            $search = $_POST['search'];
-                                             $data = search('students','name',$search);
+                                             $data = search('products','name',$search);
                                         }
                                         //Search function end
 
                                         $i = 1;
-                                        while ($student = $data->fetch_object()) :
+                                        while ($product = $data->fetch_object()) :
                                         ?>
                                              <tr class="pt-2">
                                                   <th scope="row"><?php echo $i;
                                                                       $i++; ?></th>
-                                                  <td><?php echo $student->name ?></td>
-                                                  <td><?php echo $student->email ?></td>
-                                                  <td><?php echo $student->cell ?></td>
-                                                  <td><img src="photos/<?php echo $student->photo ?>" width="80" height="80" alt=""></td>
-                                                  <td>
-                                                       <a class="btn btn-sm btn-info" href="show.php?show_id=<?php echo $student->id ?>">View</a>
-                                                       <a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $student->id ?>">Edit</a>
-                                                       <a class="btn btn-sm btn-danger delete_btn" href="?trash_id=<?php echo $student->id ?>&photo=<?php echo $student->photo ?>">Trash</a>
+                                                  <td><img src="photos/<?php echo $product->photo ?>" width="80" height="80" alt=""></td>
+                                                  <td><?php echo $product->productName ?></td>
+                                                  <td><?php echo $product->brandName ?></td>
+                                                  <td><?php echo $product->description ?></td>
+                                                  <td><?php echo $product->sellingPrice ?></td>
+                                                  <td style="width: 180px;">
+                                                       <a class="btn btn-sm btn-info" href="show.php?show_id=<?php echo $product->id ?>">View</a>
+                                                       <a class="btn btn-sm btn-warning" href="edit.php?edit_id=<?php echo $product->id ?>">Edit</a>
+                                                       <a class="btn btn-sm btn-danger delete_btn" href="?trash_id=<?php echo $product->id ?>&photo=<?php echo $product->photo ?>">Trash</a>
                                                   </td>
                                              </tr>
 
