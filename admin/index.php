@@ -7,7 +7,7 @@ include_once "autoload.php";
 if (isset($_GET['trash_id'])) {
      $trash_id = $_GET['trash_id'];
      update("UPDATE products SET trash='true' WHERE id='$trash_id'");
-     header("location:view.php");
+     header("location:index.php");
 }
 
 ?>
@@ -19,7 +19,7 @@ if (isset($_GET['trash_id'])) {
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Student CRUDV</title>
+     <title>Mini Ecom CRUDV</title>
 
      <!-- Favicon  -->
      <link rel="icon" href="assets/img/favicon-16x16.png">
@@ -53,27 +53,40 @@ if (isset($_GET['trash_id'])) {
                     <span>Product CRUDV Application</span>
                </div>
                <ul class="sidebar-nav">
-                    <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                    <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
                     <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                     <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="../index.php">Logout</a></li>
                </ul>
           </div>
           <!-- Page content  -->
           <div id="page-content-wrapper">
                <div class="container-fluid">
 
+
                     <div class="row">
                          <div class="col-lg-12">
                               <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i></a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> All Product</span></p>
 
+                              <?php
+                              if (isset($_GET['res'])) {
+                                   echo  validate('Product added succesfully', 'success');
+                              }
+                              /**
+                               * Succesfully updated
+                               */
+                              if (isset($_GET['update'])) {
+                                   echo  validate('Update succesfully', 'success');
+                              }
+
+                              ?>
                               <form class="form-inline float-right" action="" method="POST">
                                    <div class="form-group mx-sm-3 mb-2">
                                         <label for="search_1" class="sr-only">Search</label>
                                         <input type="search" class="form-control" name="search" id="search_1" placeholder="Search..">
                                    </div>
                                    <button type="submit" name="search-btn" class="btn btn-info mb-2">Search</button>
-                              </form> 
+                              </form>
                               <table class="table table-striped">
                                    <thead>
                                         <tr>
@@ -88,13 +101,13 @@ if (isset($_GET['trash_id'])) {
                                    </thead>
                                    <tbody>
                                         <?php
-                                        
+
                                         $data = allOutTrash('products');
 
                                         //Search function start
-                                        if(isset($_POST['search-btn'])){
-                                           $search = $_POST['search'];
-                                             $data = search('products','name',$search);
+                                        if (isset($_POST['search-btn'])) {
+                                             $search = $_POST['search'];
+                                             $data = search('products', 'name', $search);
                                         }
                                         //Search function end
 

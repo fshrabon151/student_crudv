@@ -58,10 +58,10 @@ if (isset($_GET['show_id'])) {
                 <span>Product CRUDV Application</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
                 <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                 <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="../index.php">Logout</a></li>
             </ul>
         </div>
         <!-- Page content  -->
@@ -104,7 +104,7 @@ if (isset($_GET['show_id'])) {
                                                 </tr>
                                             </table>
 
-                                            <a href="view.php" class="btn btn-primary btn-sm">Back</a>
+                                            <a href="index.php" class="btn btn-primary btn-sm">Back</a>
                                         </div>
                                     </div>
 

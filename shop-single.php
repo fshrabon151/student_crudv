@@ -1,5 +1,14 @@
 <?php
-include_once "../autoload.php";
+include_once "admin/autoload.php";
+
+if(isset($_GET['id'])){
+
+  $id = $_GET['id'];
+  $product = find('products',$id);
+
+  $relatedProduct = $product->category;
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +49,7 @@ include_once "../autoload.php";
 
 <body>
   <!-- Preloader-->
-  <div id="loader">
+  <!-- <div id="loader">
     <div class="centrize">
       <div class="v-center">
         <div id="mask">
@@ -52,14 +61,14 @@ include_once "../autoload.php";
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- End Preloader-->
   <!-- Navigation Bar-->
   <header id="topnav">
     <div class="container">
       <!-- Logo container-->
       <div class="logo">
-        <a href="shop-3col.php">
+        <a href="index.php">
           <img src="images/logo_light.png" alt="" class="logo-light">
           <img src="images/logo_dark.png" alt="" class="logo-dark">
         </a>
@@ -71,10 +80,10 @@ include_once "../autoload.php";
       
         <ul class="navigation-menu">
           <li>
-            <a href="shop-3col.php">Home</a>
+            <a href="index.php">Home</a>
           </li>
           <li>
-            <a href="shop-single.php">Single Page</a>
+            <a href="admin/index.php">Admin</a>
           </li>
         </ul>
         
@@ -91,36 +100,27 @@ include_once "../autoload.php";
             <div data-options="{&quot;animation&quot;: &quot;slide&quot;, &quot;controlNav&quot;: true}" class="flexslider nav-inside control-nav-dark">
               <ul class="slides">
                 <li>
-                  <img src="images/shop/single-1.jpg" alt="">
-                </li>
-                <li>
-                  <img src="images/shop/single-2.jpg" alt="">
-                </li>
-                <li>
-                  <img src="images/shop/single-3.jpg" alt="">
-                </li>
-                <li>
-                  <img src="images/shop/single-4.jpg" alt="">
+                  <img src="admin/photos/<?php echo $product->photo?>" alt="">
                 </li>
               </ul>
             </div>
           </div>
           <div class="col-md-5 col-md-offset-1">
             <div class="title mt-0">
-              <h2>Notch Blazer in Longline<span class="red-dot"></span></h2>
+              <h2><?php echo $product->productName?><span class="red-dot"></span></h2>
               <p class="m-0">Free Shipping Worldwide</p>
             </div>
             <div class="single-product-price">
               <div class="row">
                 <div class="col-xs-6">
-                  <h3><del>$29.99</del><span>$24.99</span></h3>
+                  <h3><del>$<?php echo $product->regularPrice?></del><span>$<?php echo $product->sellingPrice?></span></h3>
                 </div>
                 <div class="col-xs-6 text-right"><span class="rating-stars"> <i class="ti-star full"></i><i class="ti-star full"></i><i class="ti-star full"></i><i class="ti-star full"></i><i class="ti-star"></i><span class="hidden-xs">(3 Reviews)</span></span>
                 </div>
               </div>
             </div>
             <div class="single-product-desc">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis repellat iste natus at impedit quo consequuntur, quam, vel saepe voluptatum minus temporibus excepturi aspernatur labore molestiae fugit tempora veritatis unde.</p>
+              <p><?php echo $product->description?></p>
             </div>
             <div class="single-product-add">
               <form action="#" class="inline-form">
@@ -131,11 +131,9 @@ include_once "../autoload.php";
             </div>
             <div class="single-product-list">
               <ul>
-                <li><span>Sizes:</span> S, M, L, XL</li>
-                <li><span>Colors:</span> Blue, Red, Grey</li>
-                <li><span>Category:</span><a href="#">Blazers</a>
+                <li><span>Category:</span><a href="#"><?php echo $product->category?></a>
                 </li>
-                <li><span>Tags:</span><a href="#">Outfit</a>-<a href="#">Jeans</a>
+                <li><span>Tags:</span><a href="#"><?php echo $product->tag?></a>
                 </li>
               </ul>
             </div>
@@ -147,62 +145,29 @@ include_once "../autoload.php";
       <div class="related-products">
         <h5 class="upper">Related Products</h5>
         <div class="row">
+
+        <?php
+           $data = connect()->query("SELECT * FROM products  WHERE category = '$relatedProduct'");
+          
+           while($relatedData = $data->fetch_object()):
+        ?>
           <div class="col-md-3 col-sm-6">
             <div class="shop-product">
               <div class="product-thumb">
                 <a href="#">
-                  <img src="images/shop/1.jpg" alt="">
+                  <img src="admin/photos/<?php echo $relatedData->photo?>" alt="">
                 </a>
               </div>
               <div class="product-info">
-                <h4 class="upper"><a href="#">Premium Notch Blazer</a></h4><span>$79.99</span>
+                <h4 class="upper"><a href="#"><?php echo $relatedData->productName?></a></h4><del>$<?php echo $relatedData->regularPrice?></del><br><span>$<?php echo $relatedData->sellingPrice?></span>
                 <div class="save-product"><a href="#"><i class="icon-heart"></i></a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="shop-product">
-              <div class="product-thumb">
-                <a href="#">
-                  <img src="images/shop/2.jpg" alt="">
-                </a>
-              </div>
-              <div class="product-info">
-                <h4 class="upper"><a href="#">Premium Suit Blazer</a></h4><span>$199.99</span>
-                <div class="save-product"><a href="#"><i class="icon-heart"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="shop-product">
-              <div class="product-thumb">
-                <a href="#">
-                  <img src="images/shop/3.jpg" alt="">
-                </a>
-              </div>
-              <div class="product-info">
-                <h4 class="upper"><a href="#">Vintage Sweatshirt</a></h4><span>$99.99</span>
-                <div class="save-product"><a href="#"><i class="icon-heart"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="shop-product">
-              <div class="product-thumb">
-                <a href="#">
-                  <img src="images/shop/4.jpg" alt="">
-                </a>
-              </div>
-              <div class="product-info">
-                <h4 class="upper"><a href="#">Longline Jersey Jacket</a></h4><span>$19.99</span>
-                <div class="save-product"><a href="#"><i class="icon-heart"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php endwhile;?>
+
+
         </div>
       </div>
     </div>

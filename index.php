@@ -1,5 +1,5 @@
 <?php
-include_once "../autoload.php";
+include_once "admin/autoload.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +39,9 @@ include_once "../autoload.php";
 
   <style>
     .shop-product .product-thumb {
+      width: 100%;
       height: 321px;
+      background: #000;
     }
   </style>
 </head>
@@ -65,7 +67,7 @@ include_once "../autoload.php";
     <div class="container">
       <!-- Logo container-->
       <div class="logo">
-        <a href="shop-3col.php">
+        <a href="index.php">
           <img src="images/logo_light.png" alt="" class="logo-light">
           <img src="images/logo_dark.png" alt="" class="logo-dark">
         </a>
@@ -76,10 +78,10 @@ include_once "../autoload.php";
         <!-- Navigation Menu-->
         <ul class="navigation-menu">
           <li>
-            <a href="shop-3col.php">Home</a>
+            <a href="index.php">Home</a>
           </li>
           <li>
-            <a href="shop-single.php">Single Page</a>
+            <a href="admin/index.php">Admin</a>
           </li>
         </ul>
         <!-- End navigation menu        -->
@@ -118,14 +120,14 @@ include_once "../autoload.php";
                 <!-- single catagories start  -->
                 <?php
 
-                
-                $data = singleColumn('products','category');
-                while($category = $data->fetch_object()):
+
+                $data = singleColumn('products', 'category');
+                while ($category = $data->fetch_object()) :
                 ?>
-                <li>
-                  <a href="?category_name=<?php echo $category->category?>"><?php echo $category->category?></a>
-                </li>
-                <?php endwhile;?>
+                  <li>
+                    <a href="?category_name=<?php echo $category->category ?>"><?php echo $category->category ?></a>
+                  </li>
+                <?php endwhile; ?>
                 <!-- single catagories end  -->
 
               </ul>
@@ -141,10 +143,10 @@ include_once "../autoload.php";
                   <!-- single tranding product start  -->
                   <li>
                     <div class="product-thumbnail">
-                      <img src="../photos/<?php echo $topProduct->photo ?>" alt="">
+                      <img src="admin/photos/<?php echo $topProduct->photo ?>" alt="">
                     </div>
                     <div class="product-summary">
-                      <a href="#"><?php echo $topProduct->productName ?></a>
+                      <a href="shop-single.php?id=<?php echo $topProduct->id?>"><?php echo $topProduct->productName ?></a>
                       <del>$<?php echo $topProduct->regularPrice ?></del>
                       <br>
                       <span>$<?php echo $topProduct->sellingPrice ?></span>
@@ -170,13 +172,13 @@ include_once "../autoload.php";
               <div class="tags clearfix">
                 <!-- popular tags start  -->
                 <?php
-                $tags = singleColumn('products','tag');
-                while($tag = $tags->fetch_object()):
+                $tags = singleColumn('products', 'tag');
+                while ($tag = $tags->fetch_object()) :
                 ?>
-                <a href="?tag_name=<?php echo $tag->tag?>"><?php echo $tag->tag?></a>
-                
+                  <a href="?tag_name=<?php echo $tag->tag ?>"><?php echo $tag->tag ?></a>
 
-                <?php endwhile;?>
+
+                <?php endwhile; ?>
                 <!-- popular tags end  -->
 
 
@@ -190,7 +192,9 @@ include_once "../autoload.php";
           <div class="shop-menu">
             <div class="row">
               <div class="col-sm-8">
-                <h6 class="upper">Displaying 6 of 18 results</h6>
+
+                <h6 class="upper">Displaying <?php echo countValue('products', 'productName', 'countVal'); ?> results
+                </h6>
               </div>
               <div class="col-sm-4">
                 <form action="" method="POST">
@@ -203,7 +207,7 @@ include_once "../autoload.php";
                     </select>
                   </div><br>
 
-                  <input type="submit" name="submit" class="btn btn-danger btn-sm float-right" value="Search">
+                  <input type="submit" name="submit" class="btn btn-danger btn-sm float-right" value="Filter">
 
                 </form>
               </div>
@@ -257,8 +261,8 @@ include_once "../autoload.php";
                 <div class="col-md-4 col-sm-6">
                   <div class="shop-product">
                     <div class="product-thumb">
-                      <a href="#">
-                        <img src="../photos/<?php echo $product->photo ?>" alt="">
+                      <a href="shop-single.php?id=<?php echo $product->id?>">
+                        <img src="admin/photos/<?php echo $product->photo ?>" alt="">
                       </a>
                       <div class="product-overlay"><a href="#" class="btn btn-color-out btn-sm">Add To Cart<i class="ti-bag"></i></a>
                       </div>

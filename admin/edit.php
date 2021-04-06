@@ -1,5 +1,54 @@
 <?php
 include_once "autoload.php";
+
+
+
+
+/**
+ * Isseting Student add form
+ */
+if (isset($_POST['submit'])) {
+    // get value 
+    $productName = $_POST['productName'];
+    $regularPrice = $_POST['regularPrice'];
+    $sellingPrice = $_POST['sellingPrice'];
+    $category = $_POST['category'];
+    $brandName = $_POST['brandName'];
+    $tag = $_POST['tag'];
+    $description = $_POST['description'];
+
+    $id = $_GET['edit_id'];
+    $updated_at = date('Y-m-d g:i:h', time());
+
+
+    /**  
+     * Form validation
+     */
+    if (empty($productName) || empty($regularPrice) || empty($sellingPrice) || empty($category) || empty($brandName) || empty($tag) || empty($description)) {
+        $msg =  validate('All fields are required');
+    } else {
+        if (!empty($_FILES['new_photo']['name'])) {
+            $data = move($_FILES['new_photo'], 'photos/');
+            $photo_name = $data['unique_name'];
+            unlink('photos/' . $_POST['old_photo']);
+        } else {
+            $photo_name = $_POST['old_photo'];
+        }
+        //updating data using function
+        update("UPDATE products SET productName='$productName', regularPrice='$regularPrice', sellingPrice='$sellingPrice', category='$category', brandName='$brandName', tag='$tag', description='$description', photo='$photo_name', updated_at = '$updated_at'  WHERE id='$id'");
+        header("location:index.php?update");
+    }
+}
+
+/**
+ * Find Edit Student Data
+ */
+if (isset($_GET['edit_id'])) {
+    $id = $_GET['edit_id'];
+
+    $edit_data = find('products', $id);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,49 +87,8 @@ include_once "autoload.php";
 
 <body>
 
-    <?php
-
-    /**
-     * Isseting Student add form
-     */
-    if (isset($_POST['submit'])) {
-        // get value 
-        $productName = $_POST['productName'];
-        $regularPrice = $_POST['regularPrice'];
-        $sellingPrice = $_POST['sellingPrice'];
-        $category = $_POST['category'];
-        $brandName = $_POST['brandName'];
-        $tag = $_POST['tag'];
-        $description = $_POST['description'];
 
 
-
-        /**
-         * Form validation
-         */
-        if (empty($productName) || empty($regularPrice) || empty($sellingPrice) || empty($category) || empty($brandName) || empty($tag) || empty($description)) {
-            $msg =  validate('All fields are required');
-        } else {
-
-
-            // Upload ptofile photo			
-            $data = move($_FILES['photo'], 'photos/');
-
-            // get function 
-            $unique_name = $data['unique_name'];
-            $err_msg = $data['err_msg'];
-
-            if (empty($err_msg)) {
-                // Data insert 
-                create("INSERT INTO products(productName, regularPrice, sellingPrice, category, brandName, tag, description, photo) VALUES ('$productName','$regularPrice','$sellingPrice','$category','$brandName','$tag','$description','$unique_name')");
-                $msg =  validate('Data stable', 'success');
-            } else {
-                $msg = $err_msg;
-            }
-        }
-    }
-
-    ?>
 
     <div id="wrapper" class="menuDisplayed">
 
@@ -92,10 +100,10 @@ include_once "autoload.php";
                 <span>Product CRUDV Application</span>
             </div>
             <ul class="sidebar-nav">
-                <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
                 <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                 <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="../index.php">Logout</a></li>
             </ul>
         </div>
         <!-- Page content  -->
@@ -103,76 +111,86 @@ include_once "autoload.php";
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i> Menu </a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> Add New Product</span></p>
+                        <p class="page-title bg-info"><a href="#" class="btn btn-success" id="menu-toggle"><i class="fas fa-bars"></i> Menu </a> <span class="span-title"> <i class="fas fa-user-plus"></i></i> Add New Student</span></p>
 
                         <?php
                         if (isset($msg)) {
                             echo $msg;
                         }
+                        
+
                         ?>
+
+
                         <div class="card shadow mx-auto col-lg-6">
                             <div class="card-body p-4">
                                 <form action="" method="POST" enctype="multipart/form-data">
+
                                     <div class="form-group">
                                         <label class="form-label" for="productName">Product Name</label>
-                                        <input type="text" class="form-control" id="productName" name="productName" value="<?php old('productName') ?>">
+                                        <input type="text" class="form-control" id="productName" name="productName" value="<?php echo $edit_data->productName; ?>">
                                     </div><br>
 
                                     <div class="form-group">
                                         <label class="form-label" for="regularPrice">Regular Price </label>
-                                        <input type="text" class="form-control" id="regularPrice" name="regularPrice" value="<?php old('regularPrice') ?>">
+                                        <input type="text" class="form-control" id="regularPrice" name="regularPrice" value="<?php echo $edit_data->regularPrice; ?>">
                                     </div><br>
 
                                     <div class="form-group">
                                         <label class="form-label" for="sellingPrice">Selling Price </label>
-                                        <input type="text" class="form-control" id="sellingPrice" name="sellingPrice" value="<?php old('sellingPrice') ?>">
+                                        <input type="text" class="form-control" id="sellingPrice" name="sellingPrice" value="<?php echo $edit_data->sellingPrice; ?>">
                                     </div><br>
 
                                     <div class="form-group">
                                         <label for="">Category</label>
-                                        <select class="form-control" name="category" value="<?php old('category') ?>" id="">
+                                        <select class="form-control" name="category" id="">
                                             <option>-- Select category --</option>
-                                            <option value="Mans">Mans</option>
-                                            <option value="Womens">Womens</option>
-                                            <option value="Electronics">Electronics</option>
-                                            <option value="Furniture">Furniture</option>
+                                            <option <?php echo ($edit_data->category == 'Mans') ? 'selected' : ''; ?> value="Mans">Mans</option>
+                                            <option <?php echo ($edit_data->category == 'Womens') ? 'selected' : ''; ?> value="Womens">Womens</option>
+                                            <option <?php echo ($edit_data->category == 'Electronics') ? 'selected' : ''; ?> value="Electronics">Electronics</option>
+                                            <option <?php echo ($edit_data->category == 'Furniture') ? 'selected' : ''; ?> value="Furniture">Furniture</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label" for="brandName">Brand Name </label>
-                                        <input type="text" class="form-control" id="brandName" name="brandName" value="<?php old('brandName') ?>">
+                                        <input type="text" class="form-control" id="brandName" name="brandName" value="<?php echo $edit_data->brandName; ?>">
                                     </div><br>
                                     <div class="form-group">
                                         <label for="">Tag</label>
-                                        <select class="form-control" name="tag" value="<?php old('tag') ?>" id="">
+                                        <select class="form-control" name="tag" id="">
                                             <option>-- Select Tag --</option>
-                                            <option value="Dresses">Dresses</option>
-                                            <option value="Gadgets">Gadgets</option>
-                                            <option value="House Holds">House Holds</option>
+                                            <option <?php echo ($edit_data->tag == 'Dresses') ? 'selected' : ''; ?> value="Dresses">Dresses</option>
+                                            <option <?php echo ($edit_data->tag == 'Gadgets') ? 'selected' : ''; ?> value="Gadgets">Gadgets</option>
+                                            <option <?php echo ($edit_data->tag == 'House Holds') ? 'selected' : ''; ?> value="House Holds">House Holds</option>
 
                                         </select>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                        <input class="form-control" id="description" name="description" rows="3" value="<?php echo $edit_data->description; ?>">
                                     </div><br>
 
 
 
                                     <div class="form-group">
                                         <label for="">Product Photo</label> <br>
-                                        <img id="load_photo" style="max-width:100% ;" src="" alt="">
+                                        <img id="load_photo_edit" style="max-width:100%;" src="photos/<?php echo $edit_data->photo; ?>" alt="">
                                         <br>
-                                        <label for="data_photo" id="student_up"> <img width="100" src="assets/img/uloadphoto.png" alt=""></label>
-                                        <input id="data_photo" name="photo" value="<?php old('photo') ?>" style="display:none;" class="form-control" type="file">
+                                        <label for="data_photo_edit"> <img width="100" src="assets/img/uloadphoto.png" alt=""></label>
+                                        <input id="data_photo_edit" name="new_photo" type="file" style="display: none;" class="form-control">
+                                        <input type="hidden" value="<?php echo $edit_data->photo; ?>" name="old_photo">
+
                                     </div>
+
+
+
                                     <br>
 
                                     <div class="form-group">
                                         <label for=""></label>
-                                        <input name="submit" class="btn btn-primary" type="submit" value="Add product">
+                                        <input name="submit" class="btn btn-primary" type="submit" value="Update Student">
                                     </div>
                                 </form>
 
@@ -204,11 +222,11 @@ include_once "autoload.php";
 
         });
 
-        $('#data_photo').change(function(e) {
+        $('#data_photo_edit').change(function(e) {
 
             let file_url = URL.createObjectURL(e.target.files[0]);
-            $('#load_photo').attr('src', file_url);
-            $("#student_up").hide();
+            $('#load_photo_edit').attr('src', file_url);
+            //$("#student_up").hide();
 
         });
     </script>

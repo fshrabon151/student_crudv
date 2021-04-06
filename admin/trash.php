@@ -31,7 +31,7 @@ if (isset($_GET['restore_id'])) {
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Student CRUDV</title>
+     <title>Mini Ecom CRUDV</title>
 
      <!-- Favicon  -->
      <link rel="icon" href="assets/img/favicon-16x16.png">
@@ -65,7 +65,7 @@ if (isset($_GET['restore_id'])) {
                     <span>Product CRUDV Application</span>
                </div>
                <ul class="sidebar-nav">
-                    <li><a href="view.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
+                    <li><a href="index.php"><i class="fas fa-user-graduate"></i> All Products</a></li>
                     <li><a href="add.php"><i class="fas fa-user-plus"></i> Add Product</a></li>
                     <li><a href="trash.php"><i class="far fa-trash-alt"></i> Trash</a></li>
                     <li><a href="#">Logout</a></li>

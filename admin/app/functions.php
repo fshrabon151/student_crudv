@@ -19,7 +19,7 @@ function all($table, $order = 'DESC')
 /**
  * To fetch all data
  */
-function allOutTrash($table, $columnName='trash', $trash_value = 'false', $order = 'DESC')
+function allOutTrash($table, $columnName = 'trash', $trash_value = 'false', $order = 'DESC')
 {
     return connect()->query("SELECT * FROM $table WHERE $columnName = '$trash_value' ORDER BY id $order");
 }
@@ -46,6 +46,7 @@ function findTop($table, $number)
     return $data = connect()->query("SELECT * FROM $table LIMIT $number");
 }
 
+
 /**
  * Delete individual Data
  */
@@ -69,34 +70,51 @@ function validate($msg, $type = 'danger')
 
 function search($table, $column, $value)
 {
-    $sql="SELECT * FROM $table WHERE $column LIKE '%$value%'";
+    $sql = "SELECT * FROM $table WHERE $column LIKE '%$value%'";
     return connect()->query($sql);
 }
 /**
  * Update function
  */
-function update($sql){
+function update($sql)
+{
     connect()->query($sql);
 }
 
 /**
  * Max function
  */
-function maxValue($table,$currentName, $NewName ){
-    return connect()->query("SELECT MAX($currentName) AS $NewName FROM $table");
-    
+function maxValue($table, $currentName, $NewName)
+{
+    $max = connect()->query("SELECT MAX($currentName) AS $NewName FROM $table");
+    $maxValue = $max->fetch_object();
+    return $maxValue->$NewName;
 }
 /**
  * Min function
  */
-function minValue($table,$currentName, $NewName ){
-    return connect()->query("SELECT MIN($currentName) AS $NewName FROM $table");
+function minValue($table, $currentName, $NewName)
+{
+    $min = connect()->query("SELECT MIN($currentName) AS $NewName FROM $table");
+    $minValue = $min->fetch_object();
+    return $minValue->$NewName;
+}
+
+/**
+ * Count function
+ */
+function countValue($table, $currentName, $NewName)
+{
+    $count = connect()->query("SELECT COUNT($currentName) AS $NewName FROM $table");
+    $countValue = $count->fetch_object();
+    return $countValue->$NewName;
 }
 
 /**
  * Single dictinct column function
  */
-function singleColumn($table, $columnName){
+function singleColumn($table, $columnName)
+{
     return connect()->query("SELECT DISTINCT $columnName FROM $table");
 }
 
@@ -105,21 +123,23 @@ function singleColumn($table, $columnName){
 /**
  * Data check function for duplicate data
  */
-function dataCheck($table, $columnName, $value){
+function dataCheck($table, $columnName, $value)
+{
     $mail = connect()->query("SELECT $columnName FROM $table WHERE $columnName='$value'");
-        if($mail->num_rows > 0){ 
-            return true;
-        } else{
-            return false;
-        }
+    if ($mail->num_rows > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
  * Old function for data recover
  */
-function old($name){
-    if(isset($_POST[$name])){
-    echo $_POST[$name];
+function old($name)
+{
+    if (isset($_POST[$name])) {
+        echo $_POST[$name];
     }
 }
 
