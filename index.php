@@ -201,7 +201,6 @@ include_once "admin/autoload.php";
                   <div class="form-select">
                     <select name="typeFilter" class="form-control">
                       <option selected="selected" value="">Sort By</option>
-                      <option value="">What's new</option>
                       <option value="H2L">Price high to low</option>
                       <option value="L2H">Price low to high</option>
                     </select>
